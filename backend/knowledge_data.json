@@ -1,0 +1,270 @@
+{
+  "mitre_attack": [
+    {
+      "id": "T1110",
+      "name": "Brute Force",
+      "tactic": "Credential Access",
+      "description": "Adversaries may use brute force techniques to gain access to accounts when passwords are unknown or when password hashes are obtained. Without knowledge of the password for an account, an adversary may systematically guess the password using a repetitive or iterative mechanism."
+    },
+    {
+      "id": "T1110.001",
+      "name": "Password Guessing",
+      "tactic": "Credential Access",
+      "description": "Adversaries with no prior knowledge of legitimate credentials may guess passwords to attempt access to accounts. Repeated failed authentication attempts against the same account or service within a short window are a common indicator."
+    },
+    {
+      "id": "T1110.003",
+      "name": "Password Spraying",
+      "tactic": "Credential Access",
+      "description": "Adversaries may use a single or small list of commonly used passwords against many different accounts to attempt to acquire valid account credentials. This is distinguished from brute forcing by using one password against many usernames rather than many passwords against one username."
+    },
+    {
+      "id": "T1595",
+      "name": "Active Scanning",
+      "tactic": "Reconnaissance",
+      "description": "Adversaries may execute active reconnaissance scans to gather information that can be used during targeting, such as probing victim infrastructure via network traffic rather than other means of information gathering."
+    },
+    {
+      "id": "T1595.001",
+      "name": "Scanning IP Blocks",
+      "tactic": "Reconnaissance",
+      "description": "Adversaries may scan victim IP address blocks to gather information for targeting. Public and private IP addresses may reveal information about the organization, such as hosting providers and open services."
+    },
+    {
+      "id": "T1046",
+      "name": "Network Service Discovery",
+      "tactic": "Discovery",
+      "description": "Adversaries may attempt to get a listing of services running on remote hosts and local network infrastructure devices, including those that may be vulnerable to remote software exploitation. A rapid sequence of connection attempts to many distinct ports on a single host is a typical indicator of port scanning activity."
+    },
+    {
+      "id": "T1018",
+      "name": "Remote System Discovery",
+      "tactic": "Discovery",
+      "description": "Adversaries may attempt to get a listing of other systems by IP address, hostname, or other logical identifier on a network that may be used for lateral movement from the current system."
+    },
+    {
+      "id": "T1078",
+      "name": "Valid Accounts",
+      "tactic": "Defense Evasion, Persistence, Privilege Escalation, Initial Access",
+      "description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining initial access, persistence, privilege escalation, or defense evasion. Successful brute force or password spraying attempts often culminate in the compromise of valid account credentials."
+    },
+    {
+      "id": "T1021",
+      "name": "Remote Services",
+      "tactic": "Lateral Movement",
+      "description": "Adversaries may use valid accounts to log into a service that accepts remote connections, such as RDP, SSH, or VNC. Once compromised credentials are obtained, remote services are a common lateral movement path."
+    },
+    {
+      "id": "T1021.004",
+      "name": "SSH",
+      "tactic": "Lateral Movement",
+      "description": "Adversaries may use valid accounts to log into remote machines using Secure Shell (SSH). SSH is a protocol that allows authorized users to open remote shells on other computers."
+    },
+    {
+      "id": "T1071",
+      "name": "Application Layer Protocol",
+      "tactic": "Command and Control",
+      "description": "Adversaries may communicate using application layer protocols to avoid detection by blending in with existing traffic, such as HTTP or DNS, for command and control communication."
+    },
+    {
+      "id": "T1071.001",
+      "name": "Web Protocols",
+      "tactic": "Command and Control",
+      "description": "Adversaries may communicate using HTTP or HTTPS protocols for command and control, as these protocols are common and typically not blocked by outbound firewall rules."
+    },
+    {
+      "id": "T1041",
+      "name": "Exfiltration Over C2 Channel",
+      "tactic": "Exfiltration",
+      "description": "Adversaries may steal data by exfiltrating it over an existing command and control channel. Data is often encoded or compressed and sent using the protocol already established for C2 communications, which can appear as an unusually high outbound-to-inbound byte ratio."
+    },
+    {
+      "id": "T1030",
+      "name": "Data Transfer Size Limits",
+      "tactic": "Exfiltration",
+      "description": "Adversaries may exfiltrate data in fixed size chunks rather than whole files, or limit packet sizes below certain thresholds to evade data-loss-prevention and network anomaly detection based on traffic size."
+    },
+    {
+      "id": "T1562",
+      "name": "Impair Defenses",
+      "tactic": "Defense Evasion",
+      "description": "Adversaries may maliciously modify components of a victim environment to hinder or disable defensive mechanisms, including disabling security tools or obstructing logging."
+    },
+    {
+      "id": "T1562.001",
+      "name": "Disable or Modify Tools",
+      "tactic": "Defense Evasion",
+      "description": "Adversaries may disable security tools to avoid possible detection of their tools and activities, including host-based firewalls, antivirus, or endpoint detection and response agents."
+    },
+    {
+      "id": "T1543",
+      "name": "Create or Modify System Process",
+      "tactic": "Persistence, Privilege Escalation",
+      "description": "Adversaries may create or modify system-level processes to repeatedly execute malicious payloads as part of persistence, often via services that restart automatically."
+    },
+    {
+      "id": "T1053",
+      "name": "Scheduled Task/Job",
+      "tactic": "Execution, Persistence, Privilege Escalation",
+      "description": "Adversaries may abuse task scheduling functionality to facilitate initial or recurring execution of malicious code, often used to maintain persistence after initial access."
+    },
+    {
+      "id": "T1486",
+      "name": "Data Encrypted for Impact",
+      "tactic": "Impact",
+      "description": "Adversaries may encrypt data on target systems to interrupt availability, commonly observed in ransomware campaigns following successful initial access via brute-forced or stolen credentials."
+    },
+    {
+      "id": "T1496",
+      "name": "Resource Hijacking",
+      "tactic": "Impact",
+      "description": "Adversaries may leverage the resources of co-opted systems to complete resource-intensive tasks, which may impact system and hosted service availability."
+    },
+    {
+      "id": "T1499",
+      "name": "Endpoint Denial of Service",
+      "tactic": "Impact",
+      "description": "Adversaries may perform Denial of Service attacks to degrade or block the availability of targeted resources on endpoint devices, often preceded by reconnaissance activity such as port scanning."
+    },
+    {
+      "id": "T1589",
+      "name": "Gather Victim Identity Information",
+      "tactic": "Reconnaissance",
+      "description": "Adversaries may gather information about the victim's identity that can be used during targeting, such as employee names, email addresses, and credentials leaked in prior breaches, often used as input for password spraying lists."
+    },
+    {
+      "id": "T1204",
+      "name": "User Execution",
+      "tactic": "Execution",
+      "description": "An adversary may rely upon specific actions by a user in order to gain execution, such as opening a malicious file delivered via phishing."
+    },
+    {
+      "id": "T1566",
+      "name": "Phishing",
+      "tactic": "Initial Access",
+      "description": "Adversaries may send phishing messages to gain access to victim systems, often containing malicious attachments or links designed to harvest credentials or deliver malware."
+    }
+  ],
+  "cves": [
+    {
+      "id": "CVE-2023-27997",
+      "product": "Fortinet FortiOS SSL-VPN",
+      "severity": "CRITICAL",
+      "cvss": 9.2,
+      "description": "A heap-based buffer overflow vulnerability in FortiOS and FortiProxy SSL-VPN may allow a remote unauthenticated attacker to execute arbitrary code via specifically crafted requests, frequently exploited following credential-stuffing or brute-force reconnaissance against the VPN login portal."
+    },
+    {
+      "id": "CVE-2021-34527",
+      "product": "Windows Print Spooler",
+      "severity": "CRITICAL",
+      "cvss": 8.8,
+      "description": "A remote code execution vulnerability (PrintNightmare) exists when the Windows Print Spooler service improperly performs privileged file operations, commonly chained with valid-account access gained through brute force."
+    },
+    {
+      "id": "CVE-2020-1472",
+      "product": "Microsoft Netlogon",
+      "severity": "CRITICAL",
+      "cvss": 10.0,
+      "description": "Zerologon: an elevation of privilege vulnerability exists when an attacker establishes a vulnerable Netlogon secure channel connection to a domain controller, allowing impersonation of any computer account including the domain controller itself."
+    },
+    {
+      "id": "CVE-2019-0708",
+      "product": "Windows Remote Desktop Services",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "description": "BlueKeep: a remote code execution vulnerability exists in Remote Desktop Services when an unauthenticated attacker sends specially crafted requests, exploitable over the same RDP port often targeted by brute-force login attempts."
+    },
+    {
+      "id": "CVE-2022-26134",
+      "product": "Atlassian Confluence",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "description": "An unauthenticated remote code execution vulnerability in Confluence Server and Data Center via OGNL injection, frequently preceded by reconnaissance scanning of exposed Confluence instances."
+    },
+    {
+      "id": "CVE-2021-44228",
+      "product": "Apache Log4j2",
+      "severity": "CRITICAL",
+      "cvss": 10.0,
+      "description": "Log4Shell: a remote code execution vulnerability in Apache Log4j2 allows an attacker who can control log messages to execute arbitrary code loaded from attacker-controlled servers via JNDI lookup."
+    },
+    {
+      "id": "CVE-2017-0144",
+      "product": "Windows SMBv1",
+      "severity": "CRITICAL",
+      "cvss": 8.1,
+      "description": "EternalBlue: a remote code execution vulnerability in Microsoft SMBv1 server allows an attacker to execute arbitrary code via crafted packets, historically discovered through network service and port scanning."
+    },
+    {
+      "id": "CVE-2022-22965",
+      "product": "VMware Spring Framework",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "description": "Spring4Shell: a remote code execution vulnerability in Spring Framework allows an attacker to execute arbitrary code on a target system via a crafted web request on JDK 9 or higher."
+    },
+    {
+      "id": "CVE-2023-23397",
+      "product": "Microsoft Outlook",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "description": "A privilege escalation vulnerability in Microsoft Outlook allows an attacker to access NTLM credential hashes via a specially crafted email, often used to harvest credentials later used in brute-force or password-spraying campaigns."
+    },
+    {
+      "id": "CVE-2021-26855",
+      "product": "Microsoft Exchange Server",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "description": "ProxyLogon: a server-side request forgery vulnerability in Microsoft Exchange Server allows an attacker to bypass authentication and impersonate an administrator."
+    },
+    {
+      "id": "CVE-2018-13379",
+      "product": "Fortinet FortiOS SSL-VPN",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "description": "A path traversal vulnerability in FortiOS SSL-VPN web portal allows an unauthenticated attacker to download system files, including session files that can expose plaintext credentials used in follow-on brute-force attacks."
+    },
+    {
+      "id": "CVE-2020-0601",
+      "product": "Windows CryptoAPI",
+      "severity": "HIGH",
+      "cvss": 8.1,
+      "description": "CurveBall: a spoofing vulnerability in Windows CryptoAPI could allow an attacker to defeat trusted network connection validation, enabling man-in-the-middle attacks against authentication traffic.",
+      "note": "HIGH severity example included to demonstrate that not every retrieved CVE is CRITICAL."
+    },
+    {
+      "id": "CVE-2022-30190",
+      "product": "Microsoft Office (MSDT)",
+      "severity": "HIGH",
+      "cvss": 7.8,
+      "description": "Follina: a remote code execution vulnerability in Microsoft Office via the Microsoft Support Diagnostic Tool protocol, exploited via malicious documents delivered through phishing."
+    },
+    {
+      "id": "CVE-2019-11510",
+      "product": "Pulse Secure VPN",
+      "severity": "CRITICAL",
+      "cvss": 10.0,
+      "description": "An unauthenticated arbitrary file read vulnerability in Pulse Connect Secure allows remote attackers to read files including plaintext credentials, commonly chained with brute force against the exposed VPN login endpoint."
+    },
+    {
+      "id": "CVE-2021-21972",
+      "product": "VMware vCenter Server",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "description": "A remote code execution vulnerability in the vCenter Server plugin allows an unauthenticated attacker with network access to port 443 to execute commands, frequently preceded by port scanning to identify the exposed service."
+    },
+    {
+      "id": "CVE-2023-34362",
+      "product": "Progress MOVEit Transfer",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "description": "A SQL injection vulnerability in MOVEit Transfer could allow an unauthenticated attacker to gain unauthorized access and exfiltrate data from the underlying database."
+    },
+    {
+      "id": "CVE-2014-6271",
+      "product": "GNU Bash (Shellshock)",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "description": "A vulnerability in GNU Bash allows remote attackers to execute arbitrary code via crafted environment variables, commonly scanned for via automated network probing of exposed CGI endpoints."
+    }
+  ]
+}

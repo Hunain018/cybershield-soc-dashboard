@@ -34,7 +34,7 @@ app = FastAPI(
 
 # Root folder ke 'frontend' directory ka absolute path set karna
 frontend_path = os.path.abspath(
-    os.path.join(os.path.dirname(__file__)#, #"frontend"#"../frontend")
+    os.path.join(os.path.dirname(__file__), "../frontend")
 )
 
 app.mount("/static", StaticFiles(directory=frontend_path), name="static")

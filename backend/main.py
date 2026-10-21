@@ -1,6 +1,6 @@
 from __future__ import annotations
 import os, platform, re, sys, uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 from fastapi import FastAPI, HTTPException
@@ -80,12 +80,16 @@ except Exception:
 def now_iso():
     return datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
 
+def ago_iso(minutes: int):
+    # Seed/demo events ko alag-alag waqt par rakhne ke liye (timeline chart real timestamps se banta hai).
+    return (datetime.now(timezone.utc) - timedelta(minutes=minutes)).astimezone().isoformat(timespec="seconds")
+
 # Clearly-labelled starter/demo data; replace with your real datastore/ingestion.
 events: list[dict[str, Any]] = [
-    {"id":"EVT-001","timestamp":now_iso(),"source":"10.0.0.45","event":"SSH authentication failed","severity":"HIGH","details":"Failed password for invalid user root","status":"Open"},
-    {"id":"EVT-002","timestamp":now_iso(),"source":"192.168.1.23","event":"Network connection","severity":"INFO","details":"Connection established to 8.8.8.8:53","status":"Open"},
-    {"id":"EVT-003","timestamp":now_iso(),"source":"172.16.5.12","event":"Suspicious process","severity":"MEDIUM","details":"/usr/bin/nmap detected","status":"Investigating"},
-    {"id":"EVT-004","timestamp":now_iso(),"source":"172.16.5.20","event":"Malware indicator","severity":"CRITICAL","details":"Suspicious file indicator observed","status":"Open"},
+    {"id":"EVT-001","timestamp":ago_iso(24),"source":"10.0.0.45","event":"SSH authentication failed","severity":"HIGH","details":"Failed password for invalid user root","status":"Open"},
+    {"id":"EVT-002","timestamp":ago_iso(17),"source":"192.168.1.23","event":"Network connection","severity":"INFO","details":"Connection established to 8.8.8.8:53","status":"Open"},
+    {"id":"EVT-003","timestamp":ago_iso(9),"source":"172.16.5.12","event":"Suspicious process","severity":"MEDIUM","details":"/usr/bin/nmap detected","status":"Investigating"},
+    {"id":"EVT-004","timestamp":ago_iso(3),"source":"172.16.5.20","event":"Malware indicator","severity":"CRITICAL","details":"Suspicious file indicator observed","status":"Open"},
 ]
 incidents: list[dict[str, Any]] = [
     {"id":"INC-2026-001","title":"SSH Brute Force Activity","severity":"CRITICAL","status":"Investigating","source_ip":"10.0.0.45","created_at":now_iso(),"description":"Repeated failed SSH authentication attempts."},
@@ -150,12 +154,36 @@ def metrics():
     }
 
 def timeline_data():
-    # Chart is derived from actual stored event list, not random placeholder values.
-    labels = ["-5m","-4m","-3m","-2m","-1m","Now"]
-    total = len(events)
-    return {"labels":labels,"normal":[max(0,total*2-i) for i in range(6)],
-            "suspicious":[sum(e["severity"] in ("MEDIUM","HIGH") for e in events)+i%2 for i in range(6)],
-            "critical":[sum(e["severity"]=="CRITICAL" for e in events) for _ in labels]}
+    # Chart events ke asli timestamps se banta hai: pichhle 30 minute, 5-5 minute ke 6 buckets.
+    # normal = INFO/LOW, suspicious = MEDIUM/HIGH, critical = CRITICAL
+    bucket_min = 5
+    n_buckets = 6
+    now = datetime.now(timezone.utc)
+    labels = [f"-{(n_buckets - 1 - i) * bucket_min}m" for i in range(n_buckets - 1)] + ["Now"]
+    normal = [0] * n_buckets
+    suspicious = [0] * n_buckets
+    critical = [0] * n_buckets
+    for e in events:
+        try:
+            ts = datetime.fromisoformat(e["timestamp"])
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+            age_min = (now - ts).total_seconds() / 60
+        except Exception:
+            continue
+        if age_min < 0:
+            age_min = 0
+        idx = n_buckets - 1 - int(age_min // bucket_min)
+        if idx < 0:
+            continue  # 30 minute se purana event chart mein nahi aata
+        sev = e.get("severity")
+        if sev == "CRITICAL":
+            critical[idx] += 1
+        elif sev in ("MEDIUM", "HIGH"):
+            suspicious[idx] += 1
+        else:
+            normal[idx] += 1
+    return {"labels": labels, "normal": normal, "suspicious": suspicious, "critical": critical}
 
 @app.get("/api/v1/events")
 def get_events(limit: int = 50):

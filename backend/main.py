@@ -1,12 +1,17 @@
 from __future__ import annotations
-import platform, re, uuid
+import os, platform, re, sys, uuid
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
-import os
+
+# Vercel par sibling modules (audit.py, agent.py, ...) import ho sakein is liye backend folder path mein add karte hain.
+BASE_DIR = Path(__file__).resolve().parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
 
 # Keep your existing project modules beside this file to enable the real AI/RAG pipeline.
 try:
@@ -32,12 +37,20 @@ app = FastAPI(
     description="CyberShield AI SOC dashboard API"
 )
 
-# Root folder ke 'frontend' directory ka absolute path set karna
-frontend_path = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../frontend")
-)
+# Frontend folder ka absolute path (backend/ ke sibling: ../frontend).
+# Vercel par bhi ye kaam karta hai jab vercel.json mein includeFiles: ["frontend/**"] set ho.
+frontend_path = str(BASE_DIR.parent / "frontend")
 
-app.mount("/static", StaticFiles(directory=frontend_path), name="static")
+if os.path.isdir(frontend_path):
+    app.mount("/static", StaticFiles(directory=frontend_path), name="static")
+
+
+def _frontend_file(name: str) -> str:
+    path = os.path.join(frontend_path, name)
+    if not os.path.isfile(path):
+        raise HTTPException(status_code=404, detail=f"{name} not found")
+    return path
+
 
 USERS = {
     "tier1_analyst": {"password": "password123", "role": "Tier-1 Analyst"},
@@ -102,7 +115,16 @@ class AlertPayload(BaseModel):
 
 @app.get("/")
 def home():
-    return FileResponse(os.path.join(frontend_path, "index.html"))
+    return FileResponse(_frontend_file("index.html"))
+
+# Agar index.html mein relative links hain (styles.css / app.js), to ye routes unhein bhi serve kar dete hain.
+@app.get("/styles.css")
+def styles_css():
+    return FileResponse(_frontend_file("styles.css"), media_type="text/css")
+
+@app.get("/app.js")
+def app_js():
+    return FileResponse(_frontend_file("app.js"), media_type="application/javascript")
 
 @app.get("/api/v1/health")
 def health():

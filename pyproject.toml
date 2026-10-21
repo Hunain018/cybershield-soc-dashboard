@@ -1,2 +1,7 @@
+[project]
+name = "cybershield-soc-dashboard"
+version = "0.1.0"
+dependencies = []
+
 [tool.vercel]
 entrypoint = "backend.main:app"

@@ -7,8 +7,12 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "destination": "main.py"
+    },
+    {
       "src": "/(.*)",
-      "dest": "main.py"
+      "destination": "/index.html"
     }
   ]
 }
